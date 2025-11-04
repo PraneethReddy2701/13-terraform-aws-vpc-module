@@ -109,13 +109,13 @@ resource "aws_nat_gateway" "main" {
     var.nat_gateway_tags,
     local.common_tags,
     {
-        Name = "${var.project}-${environment}"
+        Name = "${var.project}-${var.environment}"
     }
   )
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
   # on the Internet Gateway for the VPC.
-  depends_on = [aws_internet_gateway.example]
+  depends_on = [aws_internet_gateway.main]
 }
 
 # create public route tables
@@ -143,7 +143,7 @@ resource "aws_route" "public" {
 # attaching to public-1a and public-1b (route table association)
 
 resource "aws_route_table_association" "public" {
-  count = lenght(var.public_subnet_cidrs)
+  count = length(var.public_subnet_cidrs)
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
@@ -174,7 +174,7 @@ resource "aws_route" "private" {
 # attaching to private-1a and private-1b (route table association)
 
 resource "aws_route_table_association" "private" {
-  count = lenght(var.private_subnet_cidrs)
+  count = length(var.private_subnet_cidrs)
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
@@ -205,7 +205,7 @@ resource "aws_route" "database" {
 # attaching to database-1a and database-1b (route table association)
 
 resource "aws_route_table_association" "database" {
-  count = lenght(var.database_subnet_cidrs)
+  count = length(var.database_subnet_cidrs)
   subnet_id      = aws_subnet.database[count.index].id
   route_table_id = aws_route_table.database.id
 }
