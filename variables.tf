@@ -21,7 +21,7 @@ variable "igw_tags" {
 }
 
 variable "public_subnet_cidrs" {
-  default = list(string)
+   type = list(string)
 }
 
 variable "public_subnet_tags" {
